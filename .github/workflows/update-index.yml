@@ -1,0 +1,30 @@
+name: Update Index
+
+on:
+  push:
+    branches:
+      - master  # Trigger the workflow on pushes to the master branch
+
+jobs:
+  update:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Check out the code from the repository
+
+    - name: Generate Index
+      run: |
+        # Run the command to generate the index
+        node generateIndex.js  # Replace with your actual index generation command
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "your-email@example.com"  # Set your email
+        git config --local user.name "Your Name"  # Set your name
+        git add index.html  # Track changes to your index file
+        git commit -m "Update index automatically" || echo "No changes to commit"  # Commit changes
+
+    - name: Push changes
+      run: |
+        git push origin master  # Push changes back to the master branch
